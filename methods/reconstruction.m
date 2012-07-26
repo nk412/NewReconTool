@@ -109,17 +109,7 @@ prob_out=cell(1,no_of_intervals);
 %------------------------------------------------------------%
 
 
-%----- indexes of all positions where the animal visits. for faster execution---%
-subscr=[];
-for x=1:gridmax_x
-    for y=1:gridmax_y
-        if(spatial_occ(x,y)==0)
-            continue
-        end
-        tempx=sub2ind([gridmax_x,gridmax_y],y,x);
-        subscr=[subscr; tempx];
-    end
-end
+
 
 
 
@@ -141,7 +131,7 @@ for intr=1:no_of_intervals
     count=1;
     interval_out={};
     first_spike=zeros(neurons,1);
-    last_spike=zeros(neurons,2);
+    last_spike=zeros(neurons,1);
     while(time <= endpoint)  
 
 
@@ -150,16 +140,18 @@ for intr=1:no_of_intervals
             p2=round(time+ time_window/2);
             for(tt=1:neurons)
                 spike1=findnearest(p1,spikes{tt},-1);
+                if(spike1==numel(spikes{tt}))
+                    spike1=spike1-1;
+                end
                 spike2=findnearest(p2,spikes{tt},1);
+                if(spike2==numel(spikes{tt}))
+                    spike2=spike2-1;
+                end
                 if(numel(spike1)==0)
                     spike1=0;
                 end
                 if(numel(spike2)==0)
-                    spike2= findnearest(p2,spikes{tt},-1);
-                    if(numel(spike2)==0)
-                        spike2=0;
-                    end
-                    spike2=spike2+1;
+                    spike2=1;
                 end
                 first_spike(tt)=spike1;
                 last_spike(tt)=spike2;

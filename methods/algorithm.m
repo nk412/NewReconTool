@@ -45,7 +45,7 @@ for tt=1:neurons
     while(spikes{tt}(first_spike(tt)+1)<p1 && first_spike(tt)<numel(spikes{tt})-1)
         first_spike(tt)=first_spike(tt)+1;
     end
-    while(spikes{tt}(last_spike(tt))<p2 && last_spike(tt)<numel(spikes{tt}))
+    while(spikes{tt}(last_spike(tt))<p2 && last_spike(tt)<numel(spikes{tt}-1))
         last_spike(tt)=last_spike(tt)+1;
     end
     number_of_spikes(tt)=last_spike(tt)-first_spike(tt)-1;
