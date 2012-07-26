@@ -109,6 +109,25 @@ prob_out=cell(1,no_of_intervals);
 %------------------------------------------------------------%
 
 
+%----- indexes of all positions where the animal visits. for faster execution---%
+subscr=[];
+for x=1:gridmax_x
+    for y=1:gridmax_y
+        if(spatial_occ(x,y)==0)
+            continue
+        end
+        tempx=sub2ind([gridmax_x,gridmax_y],y,x);
+        subscr=[subscr; tempx];
+    end
+end
+
+
+
+
+
+
+
+
 wbar=waitbar(0,'Initializing...');
 
 
@@ -175,7 +194,7 @@ for intr=1:no_of_intervals
 
 
 
-        time=time+timestep;
+        time=time+timestep*1;
         count=count+1;
     end
     %interval_out={per_out prob_out};

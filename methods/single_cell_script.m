@@ -9,7 +9,11 @@ tic
 %-------LONG TRAIL-------------------------------
 %post_recon=reconstruction(pos,hpc,params,[30703849,30907914],timewindow);
 % [traj,prob]=reconstruction(hpc,params,[30300000,31100000]);
-[traj,prob]=reconstruction(hpc,params,[30300000,31100000]);
+% [traj,prob]=reconstruction(hpc,params,[30300000,31100000]);
+
+
+[traj,prob]=reconstruction(hpc,params,[36000000,38000000]);
+
 
 % [traj,prob]=reconstruction(hpc,params,[30400000,30800000]);
 

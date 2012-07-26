@@ -20,10 +20,41 @@ p1=round(time- time_window/2);
 p2=round(time+ time_window/2);
 
 %Preallocate memory  for probability distribution            
-prob_dist=zeros(gridmax_x,gridmax_y);
-
-
+% prob_dist=zeros(gridmax_x,gridmax_y);
 prob_dist=spatial_occ;
+
+
+% %----- indexes of all positions where the animal visits. for faster execution---%
+% subscr=[];
+% for x=1:gridmax_x
+%     for y=1:gridmax_y
+%         if(spatial_occ(x,y)==0)
+%             continue
+%         end
+%         tempx=sub2ind([gridmax_x,gridmax_y],y,x);
+%         subscr=[subscr; tempx];
+%     end
+% end
+% %------------------------------------------------------------------------------%
+
+
+
+
+number_of_spikes=0;
+for tt=1:neurons
+    while(spikes{tt}(first_spike(tt)+1)<p1 && first_spike(tt)<numel(spikes{tt})-1)
+        first_spike(tt)=first_spike(tt)+1;
+    end
+    while(spikes{tt}(last_spike(tt))<p2 && last_spike(tt)<numel(spikes{tt}))
+        last_spike(tt)=last_spike(tt)+1;
+    end
+    number_of_spikes(tt)=last_spike(tt)-first_spike(tt)-1;
+    if(number_of_spikes<0)
+        number_of_spikes=0;
+    end
+
+end
+
 
 for y=1:gridmax_y
     for x=1:gridmax_x
@@ -32,58 +63,23 @@ for y=1:gridmax_y
         if(spatial_occ(x,y)==0)
             continue;
         end
-        % else
-        %     prob_dist(x,y)=spatial_occ(x,y);
-        % end
-
 
         %-----Bayes' Theorem implementation (PREDICTION STEP)-----%
         temp=1;    
         temp2=0;
         for tt=1:neurons
-            number_of_spikes=0;
-
-
-            while(spikes{tt}(first_spike(tt)+1)<p1)
-                first_spike(tt)=first_spike(tt)+1;
-            end
-
-            while(spikes{tt}(last_spike(tt))<p2)
-                last_spike(tt)=last_spike(tt)+1;
-            end
-
-
-
-            number_of_spikes=last_spike(tt)-first_spike(tt)-1;
 
             fr=firingrates{tt}(x,y);
-            temp=temp*power(fr,number_of_spikes);
-            % temp=temp*power(firingrates{tt}(x,y),number_of_spikes);
-
-            % xp=ones(number_of_spikes,1);
-            % fr=firingrates{tt}(x,y);
-            % xp=xp.*fr;
-            % temp=prod(xp);
-
-
-            % for yp=1:number_of_spikes
-            %     xp=xp*firingrates{tt}(x,y);
-            % end
-            % temp=temp*xp;
-
-            %temp=temp*timestep*power(firingrates{tt}(x,y),number_of_spikes);
-            %temp=temp/factorial(number_of_spikes);
+            temp=temp*power(fr,number_of_spikes(tt));
             temp2=temp2+fr;
 
         end
+
 
         temp2=temp2*-time_window;
         temp2=exp(temp2);
         prob_dist(x,y)=spatial_occ(x,y)*temp*temp2;
         %---------------------------------------------------------%
-
-
-
 
     %----------CORRECTION STEP---------%
         %velocity_constant=50+(    (900/vel1(x,y)) /10);%/50;  % resolve this.
