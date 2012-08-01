@@ -1,6 +1,6 @@
 function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor )
 %
-% reconstruction(position_data, spikes, model_params, intervals, time_window)
+% [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor)
 %
 % Uses the animal's positional data, spiking activity of the neurons, model
 % parameters (firing rates, occupancy matrices...) generated during from
@@ -69,6 +69,7 @@ elseif(nargin<5)
 elseif(nargin<6)
     compression_factor=1;    
 end
+
 
 fprintf('Reconstructing between:');
 intervals
@@ -177,6 +178,15 @@ for intr=1:no_of_intervals
         tempx=findnearest(max(max(prob_dist)),prob_dist);
         [estx,esty]=ind2sub(size(prob_dist),tempx(1));
         %fprintf('Completed: %f %%\n',((time-startpoint)/(endpoint-startpoint))*100);
+        
+        
+        %-----If no prob, take previous position-----%
+        if(estx==1 && esty==1)
+            estx=per_out(count-1,2);
+            esty=per_out(count-1,3);
+        end
+
+
         waitbar((time-startpoint)/(endpoint-startpoint),wbar,sprintf('Reconstructing....Interval %d, point %d',intr,count));
         per_out=[per_out; time,estx,esty];
         prob_out{count}=prob_dist;
@@ -186,7 +196,7 @@ for intr=1:no_of_intervals
 
 
 
-        time=time+timestep*1;
+        time=time+timestep*compression_factor;
         count=count+1;
     end
     %interval_out={per_out prob_out};

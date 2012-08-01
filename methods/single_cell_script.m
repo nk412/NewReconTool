@@ -1,36 +1,19 @@
+compression_factor=1;
+time_window=1;
+
+
 tic
+% [traj,prob]=reconstruction(hpc,params,[	35300000,35900000],[],time_window,compression_factor);
 
-
-%------SINGLE POINT---------------------
-% [traj,prob]=reconstruction(hpc,params,[31577213,31577215],pos,timewindow,1);
-%post_recon=reconstruction(pos,hpc,params,[28394731,28394733],timewindow);
-
-
-%-------LONG TRAIL-------------------------------
-%post_recon=reconstruction(pos,hpc,params,[30703849,30907914],timewindow);
-% [traj,prob]=reconstruction(hpc,params,[30300000,31100000]);
-% [traj,prob]=reconstruction(hpc,params,[30300000,31100000]);
-[traj,prob]=reconstruction(hpc,params);
-
-% [traj,prob]=reconstruction(hpc,params,[36000000,38000000]);
-
-
-% [traj,prob]=reconstruction(hpc,params,[30400000,30800000]);
-
-
-%----full run----
-%post_recon=reconstruction(pos,hpc,params,[30400000,31000000],timewindow);
- % post_recon=reconstruction(pos,hpc,params,[30450000,30500000],timewindow);
-
-
-%--------SMALL TRAIL-----------------------------
-%post_recon=reconstruction(pos,hpc,params,[30840000,30850000],timewindow);
-%post_recon=reconstruction(pos,hpc,params,[28480000,28500000],timewindow);
+[traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor);
+% [traj,prob]=reconstruction(hpc,params);
+% [traj,prob]=reconstruction(hpc,params,[6.825625126000000e+07,7.009346939000000e+07],[],time_window,compression_factor);
 
 toc
 err=recon_error(pos,traj,params);
 interval_one=err{1};
 sum(interval_one(:,6))
-
-%display_plots;
 beep;
+
+clear time_window;
+clear compression_factor;

@@ -18,25 +18,11 @@ function [ prob_dist, first_spike, last_spike ] = algorithm( time, gridmax_x,gri
 %End points of specified time window
 p1=round(time- time_window/2);
 p2=round(time+ time_window/2);
+velocity_K=100;
 
 %Preallocate memory  for probability distribution            
 % prob_dist=zeros(gridmax_x,gridmax_y);
 prob_dist=spatial_occ;
-
-
-% %----- indexes of all positions where the animal visits. for faster execution---%
-% subscr=[];
-% for x=1:gridmax_x
-%     for y=1:gridmax_y
-%         if(spatial_occ(x,y)==0)
-%             continue
-%         end
-%         tempx=sub2ind([gridmax_x,gridmax_y],y,x);
-%         subscr=[subscr; tempx];
-%     end
-% end
-% %------------------------------------------------------------------------------%
-
 
 
 
@@ -83,7 +69,7 @@ for y=1:gridmax_y
 
     %----------CORRECTION STEP---------%
         %velocity_constant=50+(    (900/vel1(x,y)) /10);%/50;  % resolve this.
-        velocity_constant=300/vel1(x,y);        
+        velocity_constant=velocity_K/vel1(x,y);        
         if(count~=1)
             estx_prev=per_out(count-1,2);
             esty_prev=per_out(count-1,3);
