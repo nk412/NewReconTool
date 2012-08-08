@@ -1,4 +1,4 @@
-function [ prob_dist, first_spike, last_spike ] = algorithm( time, gridmax_x,gridmax_y,neurons,spikes,firingrates, vel1, spatial_occ, timestep, time_window, compression_factor, count, per_out, first_spike, last_spike)
+function [ prob_dist, first_spike, last_spike ] = algorithm( time, spikes, model_params, time_window, compression_factor, iter_vars, velocity_K)
 %function algorithm(time,gridmax_x, gridmax_y, neurons, spikes, firingrates, spatial_occ, window)
 % Function not meant to be called independently. Contains the core
 % reconstruction alogrithm. Takes all required data such as firing
@@ -12,13 +12,26 @@ function [ prob_dist, first_spike, last_spike ] = algorithm( time, gridmax_x,gri
 % MxN is the grid size as specified during training.
 
 
+gridmax_x=model_params{1}(2);
+gridmax_y=model_params{1}(3);
+neurons=model_params{1}(1);
+spatial_occ=model_params{3};
+firingrates=model_params{4};
+vel1=model_params{7};
+timestep=model_params{1}(4);
+count=iter_vars{1};
+per_out=iter_vars{2};
+first_spike=iter_vars{3};
+last_spike=iter_vars{4};
+
+
+
 
 %------------------------------2 step Bayesian Reconstruction implementation----------------------------%
 
 %End points of specified time window
 p1=round(time- time_window/2);
 p2=round(time+ time_window/2);
-velocity_K=100;
 
 %Preallocate memory  for probability distribution            
 % prob_dist=zeros(gridmax_x,gridmax_y);

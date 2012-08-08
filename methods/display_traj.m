@@ -22,7 +22,7 @@ for x=1:numel(int1)
 	if(x==1)
 		waitforbuttonpress;
 	end
-	pause(.01);
+	pause(.5);
 end
 
 close(w);

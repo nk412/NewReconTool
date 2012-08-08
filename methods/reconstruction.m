@@ -1,4 +1,4 @@
-function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor )
+function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor, velocity_K )
 %
 % [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor)
 %
@@ -110,6 +110,7 @@ prob_out=cell(1,no_of_intervals);
 %------------------------------------------------------------%
 
 
+% velocity_K=100;
 
 
 
@@ -165,7 +166,8 @@ for intr=1:no_of_intervals
 
 
         % ---------------- Algorithm implementation---------------%
-        [prob_dist, first_spike, last_spike]= algorithm( time, gridmax_x,gridmax_y,neurons,spikes,firingrates, vel1,spatial_occ, timestep,time_window, compression_factor, count, per_out, first_spike, last_spike);
+        iter_vars={count,per_out,first_spike,last_spike};
+        [prob_dist, first_spike, last_spike]= algorithm( time, spikes, model_params, time_window, compression_factor,iter_vars,velocity_K);
         %=----------------Algorithm Implementation ends--------------%
         
 %------------------------------------------------------------------------------------------------%
@@ -181,7 +183,7 @@ for intr=1:no_of_intervals
         
         
         %-----If no prob, take previous position-----%
-        if(estx==1 && esty==1)
+        if(estx==1 && esty==1 && count~=1)
             estx=per_out(count-1,2);
             esty=per_out(count-1,3);
         end
