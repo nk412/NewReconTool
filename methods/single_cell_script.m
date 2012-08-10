@@ -1,9 +1,10 @@
-compression_factor=20;
+compression_factor=1;
 time_window=1;
-
+K_constant=100;
 
 tic
-[traj,prob]=reconstruction(hpc,params,[	32000000,44000000],[],time_window,compression_factor,750);
+% [traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor,K_constant);
+[traj,prob]=reconstruction(hpc,params,[	36000000,36500000],[],time_window,compression_factor,K_constant);
 
 % [traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor);
 % [traj,prob]=reconstruction(hpc,params,[32000000,44000000],[],time_window,compression_factor);
@@ -17,3 +18,4 @@ beep;
 
 clear time_window;
 clear compression_factor;
+clear K_constant;

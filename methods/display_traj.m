@@ -1,3 +1,5 @@
+delayval=.05;
+
 int1=prob{1};
 figure;
 w=waitbar(0,'Initializing');
@@ -22,7 +24,7 @@ for x=1:numel(int1)
 	if(x==1)
 		waitforbuttonpress;
 	end
-	pause(.5);
+	pause(delayval);
 end
 
 close(w);
@@ -35,6 +37,7 @@ clear yy;
 clear x;
 clear w;
 clear int1;
+clear delayval
 
 
 

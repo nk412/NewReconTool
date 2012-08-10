@@ -31,6 +31,7 @@ if(checker==1)
 else
     imagesc(map);
 end
+colorbar;
 
 end
 

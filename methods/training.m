@@ -73,6 +73,7 @@ for tempx=1:numel(intervals(:,1))
     posdata=[posdata;position_data(startpoint:endpoint,:)];
 end
 
+
 ignore_orig=1;  % Set to 1, to ignore all (0,0) points
 
 tempy=[];

@@ -97,6 +97,7 @@ for y=1:gridmax_y
     end 
 end
 
+
 %---Normalize distribution to sum up to 1
 total_sum=sum(sum(prob_dist));
 if(total_sum~=0)
