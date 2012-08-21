@@ -43,9 +43,19 @@ m_grid=binsize_grid(2);       % vertical divisions, m
 m_grid=max_x/m_grid;            % bin width
 n_grid=max_y/n_grid;            % bin height
 
+unscaled_pos=position_data;
+
 for x=1:numel(position_data(:,1))
-    position_data(x,2)=round(position_data(x,2)/m_grid) ;
+    position_data(x,2)=round(position_data(x,2)/m_grid);
+    if(position_data(x,2)==0)
+    	position_data(x,2)==1;
+    end
+
     position_data(x,3)=round(position_data(x,3)/n_grid);
+    if(position_data(x,3)==0)
+    	position_data(x,3)==1;
+    end
+    
 end
 
 
@@ -62,15 +72,27 @@ for intr=1:intervals
 		true_time_index=findnearest(interval_data(each_time,1),position_data);
 		true_x = position_data(true_time_index,2);
 		true_y = position_data(true_time_index,3);
+		true_unscaled_x=unscaled_pos(true_time_index,2);
+		true_unscaled_y=unscaled_pos(true_time_index,3);
 
 		est_x = interval_data(each_time,2);
 		est_y = interval_data(each_time,3);
+
+		% center of square
+		est_unscaled_x=(est_x*m_grid)-(m_grid/2);
+		est_unscaled_y=(est_y*n_grid)-(n_grid/2);
+
 		time_val = interval_data(each_time,1);
 
 		%----find euclidian distance------%
 
 		error_dist=sqrt((true_x(1) - est_x(1))^2 + (true_y(1) - est_y(1))^2);
-		out_intervals= [out_intervals; time_val(1), est_x(1), est_y(1), true_x(1), true_y(1), error_dist];
+		error_dist=power(error_dist,2);
+
+		unscaled_error=sqrt((true_unscaled_x(1) - est_unscaled_x(1))^2 + (true_unscaled_y(1) - est_unscaled_y(1))^2);
+		unscaled_error=power(unscaled_error,2);
+
+		out_intervals= [out_intervals; time_val(1), true_x(1), true_y(1), est_x(1), est_y(1), error_dist, true_unscaled_x(1),true_unscaled_y(1),est_unscaled_x(1), est_unscaled_y(1), unscaled_error];
 	end
 	rec_err{intr}=out_intervals;
 end

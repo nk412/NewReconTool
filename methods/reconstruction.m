@@ -91,10 +91,12 @@ intervals
 %------------------------------------------------------------%
 
 
+% velocity_K=100;
+timefactor=10000;
 
 %----------------variable initialization---------------------%
 estpos=[];
-time_window=time_window*10000; %unit conversion from seconds to 1/10000th of a second
+time_window=time_window*timefactor; %unit conversion from seconds to 1/10000th of a second
 neurons=model_params{1}(1);
 gridmax_x=model_params{1}(2);
 gridmax_y=model_params{1}(3);
@@ -109,8 +111,6 @@ per_out=cell(1,no_of_intervals);
 prob_out=cell(1,no_of_intervals);
 %------------------------------------------------------------%
 
-
-% velocity_K=100;
 
 
 
@@ -131,6 +131,7 @@ for intr=1:no_of_intervals
     per_out=[];
     prob_out={};
     count=1;
+    estimated=0;
     interval_out={};
     first_spike=zeros(neurons,1);
     last_spike=zeros(neurons,1);
@@ -166,7 +167,7 @@ for intr=1:no_of_intervals
 
 
         % ---------------- Algorithm implementation---------------%
-        iter_vars={count,per_out,first_spike,last_spike};
+        iter_vars={count,per_out,first_spike,last_spike,prob_out};
         [prob_dist, first_spike, last_spike]= algorithm( time, spikes, model_params, time_window, compression_factor,iter_vars,velocity_K);
         %=----------------Algorithm Implementation ends--------------%
         
@@ -178,6 +179,14 @@ for intr=1:no_of_intervals
 
         %-----------------------Calculate Estimated X and Y -----------------%
         tempx=findnearest(max(max(prob_dist)),prob_dist);
+
+
+%--------buggy------------%
+        % if(numel(tempx)==0)
+        %     tempx=1;
+        % end
+
+
         [estx,esty]=ind2sub(size(prob_dist),tempx(1));
         %fprintf('Completed: %f %%\n',((time-startpoint)/(endpoint-startpoint))*100);
         

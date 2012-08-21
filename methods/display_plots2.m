@@ -1,6 +1,6 @@
-plot(interval_one(:,1),interval_one(:,2),'color','red','LineWidth',2);
+plot(interval_one(:,1),interval_one(:,7),'color','red','LineWidth',2);
 hold on;
-plot(interval_one(:,1),interval_one(:,4));
+plot(interval_one(:,1),interval_one(:,9));
 hold off;
 
 % plot(interval_one(:,1),interval_one(:,2),'color','red','LineWidth',2);

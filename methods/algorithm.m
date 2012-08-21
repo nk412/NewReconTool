@@ -23,8 +23,9 @@ count=iter_vars{1};
 per_out=iter_vars{2};
 first_spike=iter_vars{3};
 last_spike=iter_vars{4};
+prob_out=iter_vars{5};
 
-
+ENABLE_CORRECTION=1;
 
 
 %------------------------------2 step Bayesian Reconstruction implementation----------------------------%
@@ -66,14 +67,13 @@ for y=1:gridmax_y
         %-----Bayes' Theorem implementation (PREDICTION STEP)-----%
         temp=1;    
         temp2=0;
+        % fprintf('...............\n');
         for tt=1:neurons
-
             fr=firingrates{tt}(x,y);
             temp=temp*power(fr,number_of_spikes(tt));
             temp2=temp2+fr;
 
         end
-
 
         temp2=temp2*-time_window;
         temp2=exp(temp2);
@@ -81,8 +81,9 @@ for y=1:gridmax_y
         %---------------------------------------------------------%
 
     %----------CORRECTION STEP---------%
-        %velocity_constant=50+(    (900/vel1(x,y)) /10);%/50;  % resolve this.
-        velocity_constant=velocity_K/vel1(x,y);        
+
+    if(ENABLE_CORRECTION==1)
+        velocity_constant=velocity_K/vel1(x,y);       
         if(count~=1)
             estx_prev=per_out(count-1,2);
             esty_prev=per_out(count-1,3);
@@ -92,6 +93,8 @@ for y=1:gridmax_y
             correction_prob=exp(correction_prob);
             prob_dist(x,y)=prob_dist(x,y)*correction_prob;
         end
+    end
+
     %----------------------------------%
 
     end 
@@ -107,6 +110,7 @@ if(total_sum~=0)
     end
     prob_dist=prob_dist.*normalization_constant;
 end
+
 
 end
 

@@ -1,0 +1,19 @@
+RESULTS
+
+1. Constant velocity does more harm than good, hinders accuracy.
+2. Maximum time spent at each cell better than average time spent at each cell.
+3. Using previous probability distribution actually hinders reconstruction.
+
+
+GRAPHS TO BE DRAWN
+
+neuron selectivity
+neuron firing rates
+X trajectory and Y trajectory
+
+1-step reconstruction
+2-step reconstruction (no more teleportation)
+Effect of velocity constant K
+
+n-fold CV results
+testing on trained data vs testing on untrained data.

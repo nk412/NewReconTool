@@ -51,7 +51,7 @@ max_x=max(position_data(:,2));  % get max X value
 max_y=max(position_data(:,3));  % get max Y value
 n_grid=binsize_grid(1);       % horizontal divisions, n
 m_grid=binsize_grid(2);       % vertical divisions, m
-if(n_grid<4 || m_grid<4)
+if(n_grid<2 || m_grid<2)
     error('Minimum grid size should be 4x4'); % minimum 4x4
 end
 m_grid=max_x/m_grid;            % bin width
@@ -66,9 +66,9 @@ max_y=max(position_data(:,3));
 
 posdata=[];
 for tempx=1:numel(intervals(:,1))
-    startpoint=findnearest(intervals(tempx,1),position_data(:,1));
+    startpoint=findnearest(intervals(tempx,1),position_data(:,1),1);
     startpoint=startpoint(1);
-    endpoint=findnearest(intervals(tempx,2),position_data(:,1));
+    endpoint=findnearest(intervals(tempx,2),position_data(:,1),-1);
     endpoint=endpoint(1);   
     posdata=[posdata;position_data(startpoint:endpoint,:)];
 end
@@ -89,6 +89,9 @@ gridmax_y=max_y;
 %=================VELOCITY AT EVERY GRID CELL=========%
 vel1=zeros(gridmax_x,gridmax_y);
 vel2=zeros(gridmax_x,gridmax_y);
+vel3=zeros(gridmax_x,gridmax_y);
+velcount=ones(gridmax_x,gridmax_y);
+
 changed=0;
 previous_x=position_data(1,2);
 previous_y=position_data(1,3);
@@ -104,6 +107,9 @@ for x=1:numel(position_data(:,1))
     if(current_y==previous_y && current_x==previous_x)
         vel2(current_x,current_y)=vel2(current_x,current_y)+1;
     else
+        vel3(current_x,current_y)=vel3(current_x,current_y)+vel2(current_x,current_y);
+        velcount(current_x,current_y)=velcount(current_x,current_y)+1;
+
         if(vel2(current_x,current_y)>vel1(current_x,current_y))
             vel1(current_x,current_y)=vel2(current_x,current_y);
             vel2(current_x,current_y)=0;
@@ -113,6 +119,8 @@ for x=1:numel(position_data(:,1))
     end
 end
 
+vel3=vel3./velcount;
+% vel1=vel3;
 
 
 
@@ -185,7 +193,8 @@ for x=1:neurons
     waitbar(x/neurons,waitb,sprintf('Calculating firing rates... Cell %d/%d',x,neurons));
 end
 
-%Calculates firing rates from occupancy matrix -------------------------
+
+% Calculates firing rates from occupancy matrix -------------------------
 for n=1:neurons
     for x=1:gridmax_x
         for y=1:gridmax_y
