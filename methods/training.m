@@ -47,6 +47,8 @@ elseif(nargin<4)
 end
 
 
+spike_window_tolerance=2;
+
 max_x=max(position_data(:,2));  % get max X value
 max_y=max(position_data(:,3));  % get max Y value
 n_grid=binsize_grid(1);       % horizontal divisions, n
@@ -66,9 +68,9 @@ max_y=max(position_data(:,3));
 
 posdata=[];
 for tempx=1:numel(intervals(:,1))
-    startpoint=findnearest(intervals(tempx,1),position_data(:,1),1);
+    startpoint=findnearest(intervals(tempx,1),position_data(:,1),1); %added the postive search gain 1
     startpoint=startpoint(1);
-    endpoint=findnearest(intervals(tempx,2),position_data(:,1),-1);
+    endpoint=findnearest(intervals(tempx,2),position_data(:,1),-1); %added the negative search gain -1
     endpoint=endpoint(1);   
     posdata=[posdata;position_data(startpoint:endpoint,:)];
 end
@@ -93,11 +95,11 @@ vel3=zeros(gridmax_x,gridmax_y);
 velcount=ones(gridmax_x,gridmax_y);
 
 changed=0;
-previous_x=position_data(1,2);
-previous_y=position_data(1,3);
-for x=1:numel(position_data(:,1))
-    current_x=position_data(x,2);
-    current_y=position_data(x,3);
+previous_x=posdata(1,2);
+previous_y=posdata(1,3);
+for x=1:numel(posdata(:,1))
+    current_x=posdata(x,2);
+    current_y=posdata(x,3);
     if(current_x==0)
         current_x=1;
     end
@@ -158,18 +160,22 @@ spatial_occ=spatial_occ./total_positions;
 %================== FIRING RATES ====================%
 waitb=waitbar(0,'Calculating Firing Rates...');
 
-neurons=size(spikes);
-neurons=neurons(2);
+neurons=numel(spikes);
 firingrates={};
 
 for x=1:neurons
     frate=zeros(gridmax_x,gridmax_y);
     for timestamp=1:size(spikes{x})
-        index=findnearest(spikes{x}(timestamp),posdata(:,1));
+        index=findnearest(spikes{x}(timestamp),posdata(:,1));  
         index=index(1);
-        if(index<startpoint || index>endpoint)
-           continue;
+        % if(index<startpoint || index>endpoint)  % major error here. startpoint and endpoint are last updated.
+        %    continue;
+        % end
+
+        if( abs ( posdata(index,1)-spikes{x}(timestamp)) > del_t*spike_window_tolerance )
+            continue;
         end
+
         xx=posdata(index,2);
         yy=posdata(index,3);
         if(ignore_orig==1)

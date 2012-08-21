@@ -2,7 +2,7 @@ p1=31323734;
 p2=44830391;
 folds=10;
 
-compression_factor=2;
+compression_factor=30;
 time_window=1;
 velocity_K=100;
 
