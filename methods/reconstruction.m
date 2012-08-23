@@ -1,4 +1,4 @@
-function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor, velocity_K )
+function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor)
 %
 % [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor)
 %
@@ -91,7 +91,7 @@ intervals
 %------------------------------------------------------------%
 
 
-% velocity_K=100;
+velocity_K=100;
 timefactor=10000;
 
 %----------------variable initialization---------------------%
@@ -181,10 +181,6 @@ for intr=1:no_of_intervals
         tempx=findnearest(max(max(prob_dist)),prob_dist);
 
 
-%--------buggy------------%
-        % if(numel(tempx)==0)
-        %     tempx=1;
-        % end
 
 
         [estx,esty]=ind2sub(size(prob_dist),tempx(1));

@@ -43,7 +43,12 @@ m_grid=binsize_grid(2);       % vertical divisions, m
 m_grid=max_x/m_grid;            % bin width
 n_grid=max_y/n_grid;            % bin height
 
+
+
+
 unscaled_pos=position_data;
+
+
 
 for x=1:numel(position_data(:,1))
     position_data(x,2)=round(position_data(x,2)/m_grid);
@@ -55,7 +60,7 @@ for x=1:numel(position_data(:,1))
     if(position_data(x,3)==0)
     	position_data(x,3)==1;
     end
-    
+
 end
 
 

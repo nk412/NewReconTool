@@ -47,18 +47,27 @@ elseif(nargin<4)
 end
 
 
-spike_window_tolerance=2;
+if(numel(binsize_grid)==1)
+    x=binsize_grid(1);
+    binsize_grid=[x,x];
+end
+binsize_grid=binsize_grid+0;    % Correction for zeroth bin error, during calculation and display.
+spike_window_tolerance=2;       % A spike is counted within interval if it occurs within these many timesteps. #default=2
 
 max_x=max(position_data(:,2));  % get max X value
 max_y=max(position_data(:,3));  % get max Y value
 n_grid=binsize_grid(1);       % horizontal divisions, n
 m_grid=binsize_grid(2);       % vertical divisions, m
 if(n_grid<2 || m_grid<2)
-    error('Minimum grid size should be 4x4'); % minimum 4x4
+    error('Minimum grid size should be 2x2'); % minimum 4x4
 end
 m_grid=max_x/m_grid;            % bin width
 n_grid=max_y/n_grid;            % bin height
 
+
+
+
+%------------------Discretize position data into bins, as per given grid size
 for x=1:numel(position_data(:,1))
     position_data(x,2)=round(position_data(x,2)/m_grid) ;
     position_data(x,3)=round(position_data(x,3)/n_grid);
@@ -66,9 +75,14 @@ end
 max_x=max(position_data(:,2));
 max_y=max(position_data(:,3));
 
+
+%--------------------Create new data set 'posdata', containing position data contained ONLY within the specified intervals
 posdata=[];
 for tempx=1:numel(intervals(:,1))
     startpoint=findnearest(intervals(tempx,1),position_data(:,1),1); %added the postive search gain 1
+    if(numel(startpoint)==0)
+        startpoint=findnearest(intervals(tempx,1),position_data(:,1),-1); %if nothing ahead, look behind
+    end
     startpoint=startpoint(1);
     endpoint=findnearest(intervals(tempx,2),position_data(:,1),-1); %added the negative search gain -1
     endpoint=endpoint(1);   
@@ -76,7 +90,7 @@ for tempx=1:numel(intervals(:,1))
 end
 
 
-ignore_orig=1;  % Set to 1, to ignore all (0,0) points
+ignore_orig=0;  % Set to 1, to ignore all (0,0) points
 
 tempy=[];
 for tempx=2:numel(posdata(:,1))

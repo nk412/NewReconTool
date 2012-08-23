@@ -16,7 +16,7 @@ for x=1:numel(int1)
 		end
 	end
 
-	map(interval_one(x,4),interval_one(x,5))=2;
+	map(interval_one(x,2)+1,interval_one(x,3)+1)=2;
 	map=rot90(map);
 	map=flipud(map);
 	waitbar(x/numel(int1),w,sprintf('%d/%d',x,numel(int1)));

@@ -94,7 +94,6 @@ for y=1:gridmax_y
             prob_dist(x,y)=prob_dist(x,y)*correction_prob;
         end
     end
-
     %----------------------------------%
 
     end 
