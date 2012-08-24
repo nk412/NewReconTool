@@ -1,4 +1,4 @@
-delayval=.05;
+delayval=.01;
 
 int1=prob{1};
 figure;

@@ -74,7 +74,28 @@ for intr=1:intervals
 	timesteps=numel(reconstructed_trajectory{intr}(:,1));
 	interval_data=reconstructed_trajectory{intr};
 	for each_time=1:timesteps
-		true_time_index=findnearest(interval_data(each_time,1),position_data);
+
+
+			true_time_index=findnearest(interval_data(each_time,1),position_data);
+		
+		% if(each_time==1)
+		% 	true_time_index=findnearest(interval_data(each_time,1),position_data);
+		% else
+  %           val=true_time_index;
+  %           temp_time=interval_data(each_time,1);
+  %           while(position_data(val,1)<temp_time)
+  %               val=val+1;
+  %           end
+  %           true_time_index=val-1;
+  %       end
+
+
+
+
+        % if(true_time_index==0)
+        % 	true_time_index=true_time_index+1;
+        % end
+
 		true_x = position_data(true_time_index,2);
 		true_y = position_data(true_time_index,3);
 		true_unscaled_x=unscaled_pos(true_time_index,2);

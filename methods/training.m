@@ -172,7 +172,7 @@ occupancy_matrix=spatial_occ;
 spatial_occ=spatial_occ./total_positions;
 
 %================== FIRING RATES ====================%
-waitb=waitbar(0,'Calculating Firing Rates...');
+% waitb=waitbar(0,'Calculating Firing Rates...');
 
 neurons=numel(spikes);
 firingrates={};
@@ -233,7 +233,7 @@ for x=1:neurons
     end
     firingrates=[firingrates {frate}];
     %fprintf('Neuron %d complete\n',x);
-    waitbar(x/neurons,waitb,sprintf('Calculating firing rates... Cell %d/%d',x,neurons));
+    % waitbar(x/neurons,waitb,sprintf('Calculating firing rates... Cell %d/%d',x,neurons));
 end
 
 
@@ -247,7 +247,7 @@ for n=1:neurons
         end
     end
 end
-close(waitb);
+% close(waitb);
 
 
 params=[neurons; gridmax_x; gridmax_y; del_t];

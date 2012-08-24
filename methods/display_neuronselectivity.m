@@ -43,6 +43,7 @@ else
     imagesc(map);
 end
 
+colorbar;
 
 
 

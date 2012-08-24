@@ -91,7 +91,7 @@ intervals
 %------------------------------------------------------------%
 
 
-velocity_K=100;
+velocity_K=400;
 timefactor=10000;
 
 %----------------variable initialization---------------------%
