@@ -177,11 +177,34 @@ waitb=waitbar(0,'Calculating Firing Rates...');
 neurons=numel(spikes);
 firingrates={};
 
+sz=size(posdata);
+sz=sz(1);
+
 for x=1:neurons
     frate=zeros(gridmax_x,gridmax_y);
     for timestamp=1:size(spikes{x})
-        index=findnearest(spikes{x}(timestamp),posdata(:,1));  
-        index=index(1);
+
+        % index=findnearest(spikes{x}(timestamp),posdata(:,1));   
+        % index=index(1)
+
+
+        if(timestamp==1)
+            index=findnearest(spikes{x}(timestamp),posdata(:,1));   
+            index=index(1);
+        else
+            val=index;
+            temp_time=spikes{x}(timestamp);
+            while(posdata(val,1)<temp_time)
+                val=val+1;
+                if(val>sz)
+                    break
+                end
+            end
+            index=val-1;
+        end
+
+
+            
         % if(index<startpoint || index>endpoint)  % major error here. startpoint and endpoint are last updated.
         %    continue;
         % end

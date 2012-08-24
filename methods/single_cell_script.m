@@ -8,7 +8,7 @@ tic
 % [traj,prob]=reconstruction(hpc,params,[	36000000,36500000],[],time_window,compression_factor,K_constant);
 
 %-------------------------------------------------------------------------------------------------------------
-[traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor,K_constant);
+[traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor);
 %------------------------------------------------------------------------------------------------------------lovejoy sequence
 
 

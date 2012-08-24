@@ -7,5 +7,9 @@ gridsize=9;
 velocity_K=100;
 
 
-[scores,meanR2]=do_cv( pos,hpc,p1,p2,folds,compression_factor,time_window,gridsize );
-meanR2
+% [scores,meanR2]=do_cv( pos,hpc,p1,p2,folds,compression_factor,time_window,gridsize );
+% meanR2
+
+tic
+params=training(pos,hpc,[10]);
+toc
