@@ -24,7 +24,7 @@ tic
 % [traj,prob]=reconstruction(hpc_PN_xy,params,[8.612980772000000e+09,9.151536559000000e+09],[],time_window,compression_factor,K_constant);
 
 % ----------------------[[[]]]
-[traj,prob]=reconstruction(hpc,params,[	startpoint,endpoint],[],time_window,compression_factor);
+% [traj,prob]=reconstruction(hpc,params,[	startpoint,endpoint],[],time_window,compression_factor);
 
 
 
