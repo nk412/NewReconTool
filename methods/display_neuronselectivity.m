@@ -24,7 +24,7 @@ for x=1:gridmax_x
 			sumrates=sum(sum(firingrates{tt}));
 			selectivity= firingrates{tt}(x,y)/sumrates;
 			if(selectivity>max_rate)
-				max_rate=sumrates;
+				max_rate=selectivity;
 				max_n=tt;
 			end
 		end

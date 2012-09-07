@@ -1,6 +1,5 @@
 compression_factor=1;
 time_window=1;
-K_constant=400;
 
 % startpoint=6.628994850000000e+09;
 % endpoint=7.028994850000000e+09;
@@ -8,6 +7,7 @@ K_constant=400;
 % startpoint=7.240036786000000e+09;
 % endpoint=7.356972839000000e+09;
 tic
+
 % [traj,prob]=reconstruction(hpc,params,[	36000000,36500000],[],time_window,compression_factor,K_constant);
 
 % p1=31323734;
@@ -17,7 +17,7 @@ tic
 %------------------------------------------------------------------------------------------------------------lovejoy sequence
 
 
-[traj,prob]=reconstruction(hpc,params,[	35300000,37100000],[],time_window,compression_factor);
+[traj,prob]=reconstruction(hpc,params,[35300000,37100000],[],time_window,compression_factor);
 % [traj,prob]=reconstruction(hpc,params,[32000000,44000000],[],time_window,compression_factor);
 % [traj,prob]=reconstruction(hpc,params,[6.825625126000000e+07,7.009346939000000e+07],[],time_window,compression_factor);
 
@@ -25,7 +25,6 @@ tic
 
 % ----------------------[[[]]]
 % [traj,prob]=reconstruction(hpc,params,[	startpoint,endpoint],[],time_window,compression_factor);
-
 
 
 
