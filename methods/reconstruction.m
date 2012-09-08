@@ -1,4 +1,4 @@
-function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, initial_positions, time_window, compression_factor)
+function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, time_window, compression_factor, timeunits, velocity_K)
 %
 % [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor)
 %
@@ -20,12 +20,6 @@ function [ trajectory, probability ] = reconstruction( spikes, model_params, int
 %                     indicates the start timestamp of the interval and the second
 %                     column represents the end timestamp of the interval. By default,
 %                     it takes the entire interval(s) on which the model was trained.
-% initial_positions - A matrix of size Ix2, where I is the number of intervals for
-%                     reconstruction. The first column and second column denote the
-%                     X and Y co-ordinate of the animal at the beginnning of the 
-%                     interval respectively. By default, this is an empty matrix, 
-%                     indicating equal likelihood for all locations for the animal to 
-%                     be present. (Algorithm Dependent)
 % time_window       - This is the time window specified in seconds, the window within
 %                     which the spiking activity of the neurons will be used for
 %                     reconstruction. This parameter is algorithm specific, and may
@@ -34,8 +28,13 @@ function [ trajectory, probability ] = reconstruction( spikes, model_params, int
 % compression_factor- The compression_factor allows representations of neural sequences
 %                     occurring faster than animal behaviour. By default, this is set
 %                     at 1X. (Algorithm Dependent) 
-%
-%
+% timeunits         - The number of units in one second. By default, 10000 is used (each
+%                     timestep is 1/10000th of a second). Used only for calculating the
+%                     the time window during reconstruction. Default: 10000
+% velocity_K        - A constant that denotes how much of the velocity information is used
+%                     in the two step correction step. Reconstruction accuracy can be
+%                     tweaked using this parameter, as it is animal dependent. Lies 
+%                     anywhere between 50 to 5000. Default : 400
 % Output -
 % trajectory    -   This is a cell array containing I matrices, where I is the number
 %                   of reconstruction intervals specified. Each matrix is a Tx3 matrix
@@ -49,30 +48,44 @@ function [ trajectory, probability ] = reconstruction( spikes, model_params, int
 %                   the animal on the grid. ( The estimated position is calcualted by 
 %                   finding the location with the maximum probability. )
 
-
+% initial_positions - A matrix of size Ix2, where I is the number of intervals for
+%                     reconstruction. The first column and second column denote the
+%                     X and Y co-ordinate of the animal at the beginnning of the 
+%                     interval respectively. By default, this is an empty matrix, 
+%                     indicating equal likelihood for all locations for the animal to 
+%                     be present. (Algorithm Dependent)
 
 
 if(nargin<2)
     error('Argumements : Position data, spikes, model parameters, start point in time, end point, (time time_window)');
 elseif(nargin<3)
     intervals=model_params{5};
-    initial_positions=[];
     time_window=1;
     compression_factor=1;
+    timeunits=10000;
+    velocity_K=400;
 elseif(nargin<4)
-    initial_positions=[];
     time_window=1;
     compression_factor=1;
+    timeunits=10000;
+    velocity_K=400;
 elseif(nargin<5)
-    time_window=1;
     compression_factor=1;
+    timeunits=10000;
+    velocity_K=400;    
 elseif(nargin<6)
-    compression_factor=1;    
+    timeunits=10000;
+    velocity_K=400;
+elseif(nargin<7)
+    velocity_K=400;
 end
 
 
-fprintf('Reconstructing between:');
-intervals
+if(numel(intervals)<2)
+    intervals=model_params{5};
+end
+% fprintf('Reconstructing between:');
+% intervals
 
 %------------Discretizing Position_data into bins------------%
 % binsize_grid=model_params{2};
@@ -90,10 +103,11 @@ intervals
 % max_y=max(position_data(:,3));
 %------------------------------------------------------------%
 
-
-velocity_K=400;
-timefactor=10000;
-
+% velocity_K=400;
+timefactor=timeunits;
+fprintf('RECONSTRUCTION INTERVALS : %d - %d\n',intervals(1),intervals(2));
+fprintf('PARAMETERS:\n');
+fprintf('Time window: %ds \t Compression Factor: %dX \t Units per second: %d/sec\n',time_window,compression_factor,timefactor);
 %----------------variable initialization---------------------%
 estpos=[];
 time_window=time_window*timefactor; %unit conversion from seconds to 1/10000th of a second
@@ -179,8 +193,6 @@ for intr=1:no_of_intervals
 
         %-----------------------Calculate Estimated X and Y -----------------%
         tempx=findnearest(max(max(prob_dist)),prob_dist);
-
-
 
 
         [estx,esty]=ind2sub(size(prob_dist),tempx(1));

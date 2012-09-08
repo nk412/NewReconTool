@@ -16,8 +16,8 @@ function [ model_params ] = training( position_data, spikes, binsize_grid, inter
 %
 % Optional Inputs-
 % binsize_grid  - [M,N] - Is a vector containing two values, M and N, and is used
-%                 to discretize the data into an MxN grid. By default, a
-%                 64x64 bin density is used.
+%                 to discretize the data into an MxN grid. If only [M] is specified,
+%                 an MxM grid is used. By default, a 32x32 bin density is used.
 % intervals     - This is a Ix2 matrix, where I is the number of intervals.
 %                 The model will be trained only on data falling within these 
 %                 intervals. At every interval specified, the first column 
@@ -40,7 +40,7 @@ function [ model_params ] = training( position_data, spikes, binsize_grid, inter
 if(nargin<2)
     error('Need atleast position data and spiking information');
 elseif(nargin<3)
-    binsize_grid=[64,64]; % 64x64 default;
+    binsize_grid=[32]; % 32x32 default;
     intervals=[min(position_data(:,1)),max(position_data(:,1))];
 elseif(nargin<4)
     intervals=[min(position_data(:,1)),max(position_data(:,1))];
@@ -64,9 +64,7 @@ end
 m_grid=max_x/m_grid;            % bin width
 n_grid=max_y/n_grid;            % bin height
 
-
-
-
+fprintf('Discretizing into %dx%d grid...\n',binsize_grid(1),binsize_grid(2));
 %------------------Discretize position data into bins, as per given grid size
 for x=1:numel(position_data(:,1))
     position_data(x,2)=round(position_data(x,2)/m_grid) ;
@@ -102,11 +100,12 @@ del_t=round(mean(tempy));
 gridmax_x=max_x;
 gridmax_y=max_y;
 
+fprintf('Calculating velocity...\n');
 %=================VELOCITY AT EVERY GRID CELL=========%
-vel1=zeros(gridmax_x,gridmax_y);
-vel2=zeros(gridmax_x,gridmax_y);
-vel3=zeros(gridmax_x,gridmax_y);
-velcount=ones(gridmax_x,gridmax_y);
+vel1=zeros(gridmax_x,gridmax_y);     % MAXIMUM TIME SPENT CONSECUTIVELY AT ANY LOCATION
+vel2=zeros(gridmax_x,gridmax_y);     % TIME SPENT AT EACH ITER
+vel3=zeros(gridmax_x,gridmax_y);     % AVERAGE TIME SPENT AT EACH LOCATION
+velcount=ones(gridmax_x,gridmax_y);  % initialized to ones, instead of zeroes for better maps.
 
 changed=0;
 previous_x=posdata(1,2);
@@ -134,20 +133,14 @@ for x=1:numel(posdata(:,1))
     previous_y=current_y;
     end
 end
-
-vel3=vel3./velcount;
-% vel1=vel3;
-
-
-
-        
+vel3=vel3./velcount;  
 
 
 
 
 
 %=============== SPATIAL OCCUPANCY ===================%
-fprintf('Calculating Spatial Occupancy...\n');
+fprintf('Calculating Firing rates...\n');
 spatial_occ=zeros(gridmax_x,gridmax_y);
 for x=1:numel(posdata(:,1))
     xx=posdata(x,2);
@@ -251,9 +244,7 @@ end
 
 
 params=[neurons; gridmax_x; gridmax_y; del_t];
-%params=[neurons; binsize_grid; startpoint; endpoint; gridmax_x; gridmax_y];
-
-%model_params={params occupancy_matrix spatial_occ firingrates};
 model_params={params binsize_grid spatial_occ firingrates intervals occupancy_matrix vel1};
+fprintf('DONE.\n');
 end
 

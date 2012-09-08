@@ -1,4 +1,39 @@
 function [r,c,V] = findnearest(srchvalue,srcharray,bias)
+% Usage:
+% Find the nearest numerical value in an array to a search value
+% All occurances are returned as array subscripts
+%
+% Output:
+%
+% For 2D matrix subscripts (r,c) use:
+%
+%       [r,c] = findnearest(srchvalue,srcharray,gt_or_lt)
+%
+%
+% To also output the found value (V) use:
+%
+%       [r,c,V] = findnearest(srchvalue,srcharray,gt_or_lt)
+%
+%
+% For single subscript (i) use:
+%
+%         i   = findnearest(srchvalue,srcharray,gt_or_lt)
+% 
+%
+% Inputs:
+%
+%    srchvalue = a numerical search value
+%    srcharray = the array to be searched
+%    bias      = 0 (default) for no bias
+%                -1 to bias the output to lower values
+%                 1 to bias the search to higher values
+%                (in the latter cases if no values are found
+%                 an empty array is ouput)
+%
+%
+% By Tom Benson (2002)
+% University College London
+% t.benson@ucl.ac.uk
 
 if nargin<2
     error('Need two inputs: Search value and search array')
