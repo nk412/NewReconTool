@@ -46,6 +46,7 @@ elseif(nargin<4)
     intervals=[min(position_data(:,1)),max(position_data(:,1))];
 end
 
+intervals=[min(position_data(:,1)),min(position_data(:,1));intervals];
 
 if(numel(binsize_grid)==1)
     x=binsize_grid(1);
@@ -242,6 +243,7 @@ for n=1:neurons
 end
 % close(waitb);
 
+intervals(1,:)=[];
 
 params=[neurons; gridmax_x; gridmax_y; del_t];
 model_params={params binsize_grid spatial_occ firingrates intervals occupancy_matrix vel1};
