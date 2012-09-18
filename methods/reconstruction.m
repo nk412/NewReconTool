@@ -1,6 +1,6 @@
-function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, time_window, compression_factor, timeunits, velocity_K)
+function [ trajectory, probability ] = reconstruction( spikes, model_params, intervals, time_window, compression_factor, velocity_K)
 %
-% [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor)
+% [trajectory, probability] = reconstruction(spikes, model_params, intervals, initial_positions, time_window, compression_factor, velocity_K)
 %
 % Uses the animal's positional data, spiking activity of the neurons, model
 % parameters (firing rates, occupancy matrices...) generated during from
@@ -57,29 +57,24 @@ function [ trajectory, probability ] = reconstruction( spikes, model_params, int
 
 
 if(nargin<2)
-    error('Argumements : Position data, spikes, model parameters, start point in time, end point, (time time_window)');
+    error('Please provide spikes and parameter model');
 elseif(nargin<3)
     intervals=model_params{5};
     time_window=1;
     compression_factor=1;
-    timeunits=10000;
     velocity_K=400;
 elseif(nargin<4)
     time_window=1;
     compression_factor=1;
-    timeunits=10000;
     velocity_K=400;
 elseif(nargin<5)
     compression_factor=1;
-    timeunits=10000;
     velocity_K=400;    
 elseif(nargin<6)
-    timeunits=10000;
-    velocity_K=400;
-elseif(nargin<7)
     velocity_K=400;
 end
 
+timeunits=1;
 
 if(numel(intervals)<2)
     intervals=model_params{5};
@@ -182,7 +177,7 @@ for intr=1:no_of_intervals
 
         % ---------------- Algorithm implementation---------------%
         iter_vars={count,per_out,first_spike,last_spike,prob_out};
-        [prob_dist, first_spike, last_spike]= algorithm( time, spikes, model_params, time_window, compression_factor,iter_vars,velocity_K);
+        [prob_dist, first_spike, last_spike]= bayes_algorithm( time, spikes, model_params, time_window, compression_factor,iter_vars,velocity_K);
         %=----------------Algorithm Implementation ends--------------%
         
 %------------------------------------------------------------------------------------------------%

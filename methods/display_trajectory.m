@@ -47,7 +47,7 @@ for x=1:numel(int1)
 	map=rot90(map);
 	map=flipud(map);
 	waitbar(x/numel(int1),w,sprintf('%d/%d',x,numel(int1)));
-	pcolor(map);
+	imagesc(flipud(map));
 	if(x==1)
 		waitforbuttonpress;
 	end

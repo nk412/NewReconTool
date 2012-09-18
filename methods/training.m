@@ -35,6 +35,21 @@ function [ model_params ] = training( position_data, spikes, binsize_grid, inter
 %                 encapsulates all information that would be required for
 %                 reconstruction by any algorithm.
 
+%%%-----delete any spikes occuring before the first position timestamp
+minpost=min(position_data(:,1));
+dels=0;
+for x=1:numel(spikes)
+    while(spikes{x}(1)<minpost)
+        dels=dels+1;
+        spikes{x}(1)=[];
+    end
+end
+if(dels>0)
+    fprintf('%d spikes that occur before minimum position timestamp IGNORED\n',dels);
+end
+%%--------------------------------------------------------------------------------
+
+
 
 
 if(nargin<2)
@@ -47,6 +62,8 @@ elseif(nargin<4)
 end
 
 intervals=[min(position_data(:,1)),min(position_data(:,1));intervals];
+
+
 
 if(numel(binsize_grid)==1)
     x=binsize_grid(1);
@@ -68,7 +85,7 @@ n_grid=max_y/n_grid;            % bin height
 fprintf('Discretizing into %dx%d grid...\n',binsize_grid(1),binsize_grid(2));
 %------------------Discretize position data into bins, as per given grid size
 for x=1:numel(position_data(:,1))
-    position_data(x,2)=round(position_data(x,2)/m_grid) ;
+    position_data(x,2)=round(position_data(x,2)/m_grid);
     position_data(x,3)=round(position_data(x,3)/n_grid);
 end
 max_x=max(position_data(:,2));
@@ -95,7 +112,7 @@ tempy=[];
 for tempx=2:numel(posdata(:,1))
     tempy=[tempy;posdata(tempx,1)-posdata(tempx-1,1)];
 end
-del_t=round(mean(tempy));
+del_t=(mean(tempy));
 
 
 gridmax_x=max_x;
@@ -202,6 +219,10 @@ for x=1:neurons
         % if(index<startpoint || index>endpoint)  % major error here. startpoint and endpoint are last updated.
         %    continue;
         % end
+%        if(index==0)
+ %           index=index+1;
+  %      end
+        
 
         if( abs ( posdata(index,1)-spikes{x}(timestamp)) > del_t*spike_window_tolerance )
             continue;

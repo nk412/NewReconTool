@@ -1,5 +1,5 @@
-function [ prob_dist, first_spike, last_spike ] = algorithm( time, spikes, model_params, time_window, compression_factor, iter_vars, velocity_K)
-%function algorithm(time,gridmax_x, gridmax_y, neurons, spikes, firingrates, spatial_occ, window)
+function [ prob_dist, first_spike, last_spike ] = bayes_algorithm( time, spikes, model_params, time_window, compression_factor, iter_vars, velocity_K)
+%function bayes_algorithm(time,gridmax_x, gridmax_y, neurons, spikes, firingrates, spatial_occ, window)
 % Function not meant to be called independently. Contains the core
 % reconstruction alogrithm. Takes all required data such as firing
 % rates and spiking data, along with other algorithm specific
@@ -31,8 +31,8 @@ ENABLE_CORRECTION=1;
 %------------------------------2 step Bayesian Reconstruction implementation----------------------------%
 
 %End points of specified time window
-p1=round(time- time_window/2);
-p2=round(time+ time_window/2);
+p1=(time- time_window/2);
+p2=(time+ time_window/2);
 
 %Preallocate memory  for probability distribution            
 % prob_dist=zeros(gridmax_x,gridmax_y);
