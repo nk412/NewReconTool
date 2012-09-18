@@ -5,7 +5,7 @@ display_neuronselectivity(params);
 display_occupancy(params);
 
 
-intervals=[3.53e7, 3.63e7];
+intervals=[3.53e3, 3.63e3];
 
 [traj,prob] = reconstruction( hpc, params, intervals);
 

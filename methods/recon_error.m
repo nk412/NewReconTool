@@ -24,11 +24,17 @@ function [ rec_err ] = recon_error( position_data, reconstructed_trajectory, mod
 % 				where T is the number of timesteps within the specified interval.
 %
 % 		rec_err{I}(:,1) - Time stamp for every timestep in the interval.
-% 		rec_err{I}(:,2) - Estimated X coordinate at the timestep.
-% 		rec_err{I}(:,3) - Estimated Y coordinate at the timestep.
-% 		rec_err(I)(:,4) - True X coordinate of the animal as per position_data.
-% 		rec_err(I)(:,5) - True Y coordinate of the animal as per position_data.
-% 		rec_err(I)(:,6) - Euclidian distance between true and estimated points
+% 		rec_err{I}(:,2) - Actual grid cell X-coordinate.
+% 		rec_err{I}(:,3) - Actual grid cell Y-coordinate.
+% 		rec_err(I)(:,4) - Reconstructed grid cell X-Coordinate
+% 		rec_err(I)(:,5) - Reconstructed grid cell Y-Coordinate
+% 		rec_err(I)(:,6) - Euclidian distance between true and estimated points (grid cell units)
+% 		rec_err{I}(:,7) - Actual X-coordinate in true units.
+% 		rec_err{I}(:,8) - Actual Y-coordinate in true units.
+% 		rec_err{I}(:,9) - Reconstructed X-Coordinate in true units
+% 		rec_err(I)(:,10)- Reconstructed Y-Coordinate in true units
+% 		rec_err(I)(:,11)- Euclidian distance between true and estimated points (true units)
+%
 % 	where I is the number of recontructed intervals.
 
 

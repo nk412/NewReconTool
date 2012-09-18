@@ -1,6 +1,7 @@
 function [ position_data ] = shift_origin( position_data )
-%SHIFT_ORIGIN Summary of this function goes here
-%   Detailed explanation goes here
+% position_data = shift_origin ( position_data );
+%  This function returns a fixed trajectory which is normalized to zero. 
+%  This can be useful in cases when the recorded data is not normalized properly.
 
 minimum_pos_x=min(position_data(:,2));
 minimum_pos_y=min(position_data(:,3));

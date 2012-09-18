@@ -28,9 +28,6 @@ function [ trajectory, probability ] = reconstruction( spikes, model_params, int
 % compression_factor- The compression_factor allows representations of neural sequences
 %                     occurring faster than animal behaviour. By default, this is set
 %                     at 1X. (Algorithm Dependent) 
-% timeunits         - The number of units in one second. By default, 10000 is used (each
-%                     timestep is 1/10000th of a second). Used only for calculating the
-%                     the time window during reconstruction. Default: 10000
 % velocity_K        - A constant that denotes how much of the velocity information is used
 %                     in the two step correction step. Reconstruction accuracy can be
 %                     tweaked using this parameter, as it is animal dependent. Lies 
