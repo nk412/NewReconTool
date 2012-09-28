@@ -61,8 +61,8 @@ for x=1:folds
 	train3=init+interv;
 	%fprintf('[%d,%d ; %d,%d]\n',p1,train2,train3,p2);
 	init=init+interv;
-	params=training(pos,hpc,[32,32],[p1,train2;train3,p2]);
-	[traj,prob]=reconstruction(hpc,params,[train2,train3],time_window,compression_factor, velocity_K);
+	params=training(pos,spikes,[32,32],[p1,train2;train3,p2]);
+	[traj,prob]=reconstruction(spikes,params,[train2,train3],time_window,compression_factor, velocity_K);
 	err=recon_error(pos,traj,params);
 	interval_one=err{1};
 	sumsquares=sum(interval_one(:,6));

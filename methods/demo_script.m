@@ -5,7 +5,7 @@ display_neuronselectivity(params);
 display_occupancy(params);
 
 
-intervals=[3.53e3, 3.63e3];
+intervals=[3.64e3, 3.65e3];
 
 [traj,prob] = reconstruction( hpc, params, intervals);
 
@@ -17,4 +17,4 @@ display_plots(r_err);
 
 display_trajectory(params, prob, r_err);
 
-crossvalidation(hpc,pos,16);
+crossvalidation(pos,hpc);
