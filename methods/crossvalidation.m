@@ -1,5 +1,5 @@
-function [ scores ] = crossvalidation( pos,spikes,interval,folds,compression_factor,time_window, velocity_K )
-%CROSSVALIDATION function [ scores ] = crossvalidation( pos,hpc,interval,folds,compression_factor,time_window, velocity_K )
+function [ scores ] = crossvalidation( pos,spikes,interval,folds,gridsize,compression_factor,time_window, velocity_K )
+%CROSSVALIDATION function [ scores ] = crossvalidation( pos,hpc,interval,folds,gridsize,compression_factor,time_window, velocity_K )
 %	This function carries out a k-fold cross validation over the provided data set
 %	and intervals. It returns a matrix that contains the results for every fold.
 %
@@ -33,14 +33,16 @@ function [ scores ] = crossvalidation( pos,spikes,interval,folds,compression_fac
 if(nargin<2)
     error('Please provide the position data and spikes cell array');
 elseif(nargin<3)
-    interval=[];folds=10;compression_factor=10;time_window=1;velocity_K=400;
+    interval=[];folds=10;gridsize=16;compression_factor=10;time_window=1;velocity_K=400;
 elseif(nargin<4)
-    folds=10;compression_factor=10;time_window=1;velocity_K=400;
+    folds=10;gridsize=16;compression_factor=10;time_window=1;velocity_K=400;
 elseif(nargin<5)
-    compression_factor=10;time_window=1;velocity_K=400;
+    gridsize=16;compression_factor=10;time_window=1;velocity_K=400;
 elseif(nargin<6)
-    time_window=1;velocity_K=400;
+    compression_factor=10;time_window=1;velocity_K=400;
 elseif(nargin<7)
+    time_window=1;velocity_K=400;
+elseif(nargin<8)
     velocity_K=400;
 end
 unitspersecond=1;
@@ -61,7 +63,7 @@ for x=1:folds
 	train3=init+interv;
 	%fprintf('[%d,%d ; %d,%d]\n',p1,train2,train3,p2);
 	init=init+interv;
-	params=training(pos,spikes,[32,32],[p1,train2;train3,p2]);
+	params=training(pos,spikes,gridsize,[p1,train2;train3,p2]);
 	[traj,prob]=reconstruction(spikes,params,[train2,train3],time_window,compression_factor, velocity_K);
 	err=recon_error(pos,traj,params);
 	interval_one=err{1};

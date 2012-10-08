@@ -22,9 +22,14 @@ spatial_occupancy=model_params{3};
 map=rot90(spatial_occupancy);
 if(checker==1)
     pcolor(flipud(map));
+
 else
     imagesc(map);
 end
+
+title('Spatial occupancy');
+xlabel('X (grid units)');
+ylabel('Y (grid units)');
 colorbar;
 
 end

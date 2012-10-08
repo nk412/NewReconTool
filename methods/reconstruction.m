@@ -97,9 +97,9 @@ end
 
 % velocity_K=400;
 timefactor=timeunits;
-fprintf('RECONSTRUCTION INTERVALS : %d - %d\n',intervals(1),intervals(2));
-fprintf('PARAMETERS:\n');
-fprintf('Time window: %ds \t Compression Factor: %dX \t Units per second: %d/sec\n',time_window,compression_factor,timefactor);
+fprintf('#### Reconstruction intervals: %ds - %ds\n',intervals(1),intervals(2));
+% fprintf('PARAMETERS:\n');
+fprintf('#### Parameters: \tTime window: %ds \t Compression Factor: %dX\n',time_window,compression_factor);
 %----------------variable initialization---------------------%
 estpos=[];
 time_window=time_window*timefactor; %unit conversion from seconds to 1/10000th of a second
@@ -174,7 +174,7 @@ for intr=1:no_of_intervals
 
         % ---------------- Algorithm implementation---------------%
         iter_vars={count,per_out,first_spike,last_spike,prob_out};
-        [prob_dist, first_spike, last_spike]= bayes_algorithm( time, spikes, model_params, time_window, compression_factor,iter_vars,velocity_K);
+        [prob_dist, first_spike, last_spike]= bayes_algorithm( time, spikes, model_params, time_window,iter_vars,velocity_K);
         %=----------------Algorithm Implementation ends--------------%
         
 %------------------------------------------------------------------------------------------------%

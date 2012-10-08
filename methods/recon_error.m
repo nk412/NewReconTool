@@ -28,12 +28,12 @@ function [ rec_err ] = recon_error( position_data, reconstructed_trajectory, mod
 % 		rec_err{I}(:,3) - Actual grid cell Y-coordinate.
 % 		rec_err(I)(:,4) - Reconstructed grid cell X-Coordinate
 % 		rec_err(I)(:,5) - Reconstructed grid cell Y-Coordinate
-% 		rec_err(I)(:,6) - Euclidian distance between true and estimated points (grid cell units)
+% 		rec_err(I)(:,6) - Square of Euclidean distance between true and estimated points (grid cell units)
 % 		rec_err{I}(:,7) - Actual X-coordinate in true units.
 % 		rec_err{I}(:,8) - Actual Y-coordinate in true units.
 % 		rec_err{I}(:,9) - Reconstructed X-Coordinate in true units
 % 		rec_err(I)(:,10)- Reconstructed Y-Coordinate in true units
-% 		rec_err(I)(:,11)- Euclidian distance between true and estimated points (true units)
+% 		rec_err(I)(:,11)- Square of Euclidean distance between true and estimated points (true units)
 %
 % 	where I is the number of recontructed intervals.
 

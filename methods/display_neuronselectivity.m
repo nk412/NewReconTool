@@ -55,8 +55,11 @@ else
     imagesc(map);
 end
 
-colorbar;
-
+title('Neuron selectivity map');
+xlabel('X (grid units)');
+ylabel('Y (grid units)');
+c=colorbar;
+ylabel(c,'Neuron number');
 
 
 end

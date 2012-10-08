@@ -1,5 +1,5 @@
-function [ ] = display_plots( reconstruction_error, trueplot, only_x )
-%   display_plots ( reconstruction_error, trueplot, only_x)
+function [ ] = display_plots( reconstruction_error, trueplot )
+%   display_plots ( reconstruction_error, trueplot)
 %   This function plots the true trajectory of the animal and the reconstructed
 %   trajectory overlayed over it. The red line represents the true trajectory while
 %   the blue line represents the reconstructed trajectory. The function plots
@@ -12,19 +12,15 @@ function [ ] = display_plots( reconstruction_error, trueplot, only_x )
 %  Optional INPUT
 %   trueplot                   - This option enables plotting using true units, instead of grid cell
 %                                units. By default, it is set to 0. When enabled, it calculates
-%                                the position of the reconstructed grid cell by estimating the center
-%                                of the cell.
-%   only_x                     - This parameter enables plotting of Y-coordinate as well. By default,
-%                                it is set to 0. The function can only plot one coordinate at a time,
-%                                and so the Y-coordinate plot must be triggered by any key press.
+%                                the position of the reconstructed grid cell by estimating the true
+%                                location of the cell.
+
 
 if(nargin<1)
-    error('Please provide a reconstructed trajectory');
-elseif(nargin<2)
+    error('Please provide a reconstructed trajectory.');
+end
+if(nargin<2)
     trueplot=0;
-    only_x=1;
-elseif(nargin<3)
-    only_x=1;
 end
 
 
@@ -34,30 +30,60 @@ end
 
 
 if(trueplot==0)
+    figure;
     plot(reconstruction_error(:,1),reconstruction_error(:,2),'color','red','LineWidth',2);
     hold on;
     plot(reconstruction_error(:,1),reconstruction_error(:,4));
     hold off;
-    if(only_x==0)
-        waitforbuttonpress;
-        plot(reconstruction_error(:,1),reconstruction_error(:,3),'color','red','LineWidth',2);
-        hold on;
-        plot(reconstruction_error(:,1),reconstruction_error(:,5));
-        hold off;
-    end
+    title('X-coordinate (grid units)');
+    xlabel('Time (seconds)');
+    ylabel('X (grid units)');
+    legend('Actual','Reconstructed')
+    legend boxoff;
+
+    figure
+    plot(reconstruction_error(:,1),reconstruction_error(:,3),'color','red','LineWidth',2);
+    hold on;
+    plot(reconstruction_error(:,1),reconstruction_error(:,5));
+    hold off;
+    title('Y-coordinate (grid units)');
+    xlabel('Time (seconds)');
+    ylabel('Y (grid units)');
+    legend('Actual','Reconstructed')
+    legend boxoff;
+    % if(only_x==0)
+    %     waitforbuttonpress;
+    %     plot(reconstruction_error(:,1),reconstruction_error(:,3),'color','red','LineWidth',2);
+    %     hold on;
+    %     plot(reconstruction_error(:,1),reconstruction_error(:,5));
+    %     hold off;
+    % end
     
 else
+    figure;
     plot(reconstruction_error(:,1),reconstruction_error(:,7),'color','red','LineWidth',2);
     hold on;
     plot(reconstruction_error(:,1),reconstruction_error(:,9));
     hold off;
-    if(only_x==0)
-        waitforbuttonpress
-        plot(reconstruction_error(:,1),reconstruction_error(:,8),'color','red','LineWidth',2);
-        hold on;
-        plot(reconstruction_error(:,1),reconstruction_error(:,10));
-        hold off;
-    end
+    title('X-coordinate (true units)');
+    xlabel('Time (seconds)');
+    ylabel('X (true units)');
+    legend('Actual','Reconstructed')
+    legend boxoff;
+
+
+    figure;
+    plot(reconstruction_error(:,1),reconstruction_error(:,8),'color','red','LineWidth',2);
+    hold on;
+    plot(reconstruction_error(:,1),reconstruction_error(:,10));
+    hold off;
+    title('Y-coordinate (true units)');
+    xlabel('Time (seconds)');
+    ylabel('Y (true units)');
+
+    legend('Actual','Reconstructed')
+    legend boxoff;
+ 
 end
 
 

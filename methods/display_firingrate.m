@@ -31,7 +31,13 @@ if(checker==1)
 else
     imagesc(map);
 end
-colorbar;
+
+titlestr=sprintf('Firing rates for neuron %d',neuron);
+title(titlestr);
+xlabel('X (grid units)');
+ylabel('Y (grid units)');
+c=colorbar;
+ylabel(c,'Firing rate (Hz)');
 
 end
 

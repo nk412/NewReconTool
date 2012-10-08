@@ -7,7 +7,7 @@ p2=p2-interv;
 gridscores=[];
 
 for gridcell=2:32
-	scores=crossvalidation(hpc,pos,gridcell,[p1,p2],10,10,1, 1000000, 2400 );
+	scores=crossvalidation(pos,hpc,[p1,p2],10,gridcell,10,1,4000 );
 	meanr2=mean(scores(:,3));
 	gridscores=[gridscores;gridcell,meanr2];
 end
